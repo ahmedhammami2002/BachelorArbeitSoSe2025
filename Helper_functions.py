@@ -8,11 +8,11 @@ def split_by_classification(model, X, device='cpu'):
     model.eval()
     with torch.no_grad():
         X = X.to(device)
+        model = model.to(device)
 
         # Get predictions
         logits = model(X)
-        probabilities = torch.sigmoid(logits.squeeze())
-        predictions = torch.round(probabilities)
+        predictions =  torch.argmax(logits, dim=1)
 
         # Convert boolean masks to indices
         pos_indices = torch.where(predictions == 1)[0].cpu().numpy()
