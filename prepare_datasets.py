@@ -42,6 +42,54 @@ def get_and_prepare_german_dataset():
                            'OtherLoansAtBank', 'HasCoapplicant', 'HasGuarantor', 'OwnsHouse',
                            'RentsHouse', 'Unemployed', 'YearsAtCurrentJob_lt_1', 'YearsAtCurrentJob_geq_4']
 
-
-    
     return X.values, y , feature_names , categorical_features , continuous_features, actionable_features
+
+
+def get_and_preprocess_cc():
+
+    X = pd.read_csv("data/communities_and_crime.csv", index_col=0)
+
+
+    y_col = 'ViolentCrimesPerPop numeric'
+
+    # some have a missing ViolentCrimesPerPop numeric which is the crime rate these instances will be dropped
+    X = X[X[y_col] != "?"]
+
+    # other values will be float32
+    X[y_col] = X[y_col].values.astype('float32')
+
+    # get all the colums that have a missing alue
+    cols_with_missing_values = []
+    for col in X:
+        if '?' in X[col].values.tolist():
+            cols_with_missing_values.append(col)
+
+
+
+    y = X[y_col]
+
+    # everything over 50th percentil gets negative outcome (lots of crime is bad)
+    high_violent_crimes_threshold = 50
+    y_cutoff = np.percentile(y, high_violent_crimes_threshold)
+
+    X = X.drop(cols_with_missing_values + ['communityname string', 'fold numeric', 'county numeric',
+                                    'community numeric', 'state numeric'] + [y_col], axis=1)
+
+    # setup ys
+    y = np.array([0 if val > y_cutoff else 1 for val in y])
+
+    feature_names = list(X.columns)
+
+    actionable_features = list(X.columns)
+
+    continuous_features = list(X.columns)
+
+    categorical_features = []
+
+
+
+    return X.values, y , feature_names , categorical_features , continuous_features, actionable_features
+
+
+
+
