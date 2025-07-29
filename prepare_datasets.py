@@ -93,3 +93,22 @@ def get_and_preprocess_cc():
 
 
 
+def get_and_prepare_diabetes_dataset():
+
+    X = pd.read_csv("data/diabetes.csv")
+    y = X["Outcome"]
+
+    # Store feature names before dropping columns
+    feature_names = list(X.columns)
+    feature_names.remove("Outcome")
+
+    X = X.drop(["Outcome"], axis=1)
+
+    categorical_features = []
+
+    continuous_features = ['Pregnancies', 'Glucose','BloodPressure','SkinThickness','Insulin','BMI','DiabetesPedigreeFunction','Age']
+
+    actionable_features = ['Glucose','BloodPressure','SkinThickness','Insulin','BMI']
+
+    return X.values, y.values , feature_names , categorical_features , continuous_features, actionable_features
+
