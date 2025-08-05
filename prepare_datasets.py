@@ -111,4 +111,3 @@ def get_and_prepare_diabetes_dataset():
     actionable_features = ['Glucose','BloodPressure','SkinThickness','Insulin','BMI']
 
     return X.values, y.values , feature_names , categorical_features , continuous_features, actionable_features
-
