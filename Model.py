@@ -1,4 +1,4 @@
-# Taken from https://github.com/dylan-slack/manipulating-cfes/blob/main/train_models.py
+# taken from https://github.com/dylan-slack/manipulating-cfes/blob/main/train_models.py
 # wanted to use this the same model as in the paper
 import torch
 from torch import nn

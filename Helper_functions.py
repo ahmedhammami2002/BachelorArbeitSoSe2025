@@ -16,8 +16,6 @@ def split_by_classification(model, X):
 
         X_positive = X[predictions == 1]
         X_negative = X[predictions == 0]
-
-
         return X_positive, X_negative, pos_indices, neg_indices
 
 
